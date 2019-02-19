@@ -13,6 +13,9 @@ const app = express();
 
 app.use(bodyParser.json());
 
+
+// TODO requests
+
 app.post('/todos', (req, res) => {
     let todo = new Todo({
         text: req.body.text
@@ -91,6 +94,23 @@ app.delete('/todos/:id', (req, res) => {
         res.status(400).send(error);
     })
 });   
+
+
+
+// USERS Requests
+
+app.post('/users', (req, res) => {
+    let body = _.pick(req.body, ['email', 'password']);
+    let user = new User(body);
+
+    console.log(body);
+
+    user.save().then((user) =>{
+        res.send(user);
+    }, error => {
+        res.status(400).send(error);
+    })
+}); 
 
 app.listen(port, () => {
     console.log(`Server started on port ${port}!`);
